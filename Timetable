@@ -1,0 +1,154 @@
+program NameTimetable_Variant4;
+
+{$APPTYPE CONSOLE}
+
+uses
+  SysUtils,
+  Windows;
+
+var
+  Timetable:array [1..2,1..5,1..5] of string;
+  DayOfWeek,nameOfPara:string;
+  komanda,answer:string;
+  week,day,i,k,para:integer;
+
+procedure ProcDay;
+begin
+  writeln('Êàêîé çàâòðà äåíü íåäåëè?(Monday/Tuesday/Wednesday/Thursday/Friday)');
+  repeat
+    readln(DayOfWeek);
+    dayofweek:=ansilowercase(dayofweek);
+    if (DayOfWeek<>'friday') and (DayOfWeek<>'monday') and (DayOfWeek<>'tuesday') and (DayOfWeek<>'wednesday') and(DayOfWeek<>'thursday') then
+    writeln('ÎØÈÁÊÀ! Ïîïðîáóé åùå ðàç')
+    else
+    break;
+  until false;
+  if DayOfWeek='monday' then day:=1;
+  if DayOfWeek='tuesday' then day:=2;
+  if DayOfWeek='wednesday' then day:=3;
+  if DayOfWeek='thursday' then day:=4;
+  if DayOfWeek='friday' then day:=5;
+  for i:=1 to 5 do
+  begin
+    if Timetable[week,day,i]<>'' then
+    writeln(i,'.',Timetable[week,day,i]);
+  end;
+end;
+
+procedure ProcWeek;
+begin
+  writeln('Êàêàÿ ñåé÷àñ íåäåëÿ?(1/2)');
+  readln(week);
+  ProcDay;
+end;
+
+procedure Stat;
+begin
+  writeln('1');
+  ProcWeek;
+end;
+
+procedure Add;
+begin
+  writeln('2');
+  writeln('Íà êàêóþ íåäåëþ?(1/2)');
+  readln(week);
+  writeln('Íà êàêîé äåíü?(Monday/Tuesday/Wednesday/Thursday/Friday)');
+  readln(dayOfWeek);
+  if DayOfWeek='monday' then day:=1;
+  if DayOfWeek='Tuesday' then day:=2;
+  if DayOfWeek='Wednesday' then day:=3;
+  if DayOfWeek='Thursday' then day:=4;
+  if DayOfWeek='Friday' then day:=5;
+  writeln('Êàêîé ïàðîé?');
+  readln(para);
+  writeln('Êàêîé ïðåäìåò?');
+  readln(nameOfPara);
+  Timetable[week,day,para]:=nameOfPara;
+end;
+
+procedure New;
+begin
+  writeln('3');
+  for week:=1 to 2 do
+  begin
+    writeln('Íåäåëÿ ',week);
+    for day:=1 to 5 do
+    begin
+      writeln('**Ââåäè "stop" äëÿ çàâåðøåíèÿ**');
+      case day of
+      1: writeln('Íà ïîíåäåëüíèê');
+      2: writeln('Íà âòîðíèê');
+      3: writeln('Íà ñðåäó');
+      4: writeln('Íà ÷åòâåðã');
+      5: writeln('Íà ïÿòíèöó');
+      end;
+      for para:=1 to 5 do
+      begin
+        k:=para;
+        write(k,'.');
+        readln(nameOfPara);
+        if nameofpara='stop' then break;
+        timetable[week,day,para]:=nameOfPara;
+      end;
+      if nameofpara='stop' then break;
+    end;
+    if nameofpara='stop' then break;
+  end;
+end;
+
+procedure Exit;
+begin
+  writeln('0');
+  writeln('Òû äåéñòâèòåëüíî õî÷åøü âûéòè?(yes/no)');
+  readln(answer);
+end;
+
+procedure Hello;
+begin
+  Writeln('Ââåäè êîìàíäó(stat/add/new/exit)');
+  readln(komanda);
+  komanda:=ansilowercase(komanda);
+end;
+
+procedure MyKomandas;
+begin
+  writeln('Çäàðîâà!');
+  repeat
+  Hello;
+  if (komanda<>'stat') and (komanda<>'add') and (komanda<>'new') and (komanda<>'exit') then
+  writeln('ÎØÈÁÊÀ! Ïîïðîáóé åùå ðàç')
+  else
+  begin
+    if komanda='stat' then
+    Stat;
+    if komanda='add' then
+    Add;
+    if komanda='new' then
+    New;
+    if komanda='exit' then
+    exit;
+    if answer='yes' then
+    break
+    else
+  end;
+  until false;
+end;
+
+begin
+  SetConsoleCP(1251);
+  SetConsoleOutputCp(1251);
+  Timetable[2,2,1]:='English';Timetable[2,2,2]:='Ìàòðà ÏÇ';Timetable[2,2,3]:='Ôèëîñîôèÿ ËÊ';
+  Timetable[1,3,1]:='ÈÊÃ ÏÇ ';Timetable[1,3,2]:='Ôèçðà';Timetable[1,3,3]:='Ìàòðà ËÊ';
+  Timetable[2,3,1]:='ÈÊÃ ÏÇ ';Timetable[2,3,2]:='Ôèçðà';Timetable[2,3,3]:='Ìàòðà ËÊ';
+  Timetable[1,4,1]:='ÎÀèÏ ËÐ ';Timetable[1,4,2]:='English';Timetable[1,4,3]:='ÎÊÒ ËÊ';Timetable[1,4,4]:='ÎÀèÏ ËÊ';
+  Timetable[2,4,1]:=' - ';Timetable[2,4,2]:='English';Timetable[2,4,3]:='ÎÊÒ ËÊ';Timetable[2,4,4]:='ÎÀèÏ ËÊ';
+  Timetable[1,5,1]:='Ìàòðà ËÊ ';Timetable[1,5,2]:='Ìàòðà ÏÇ';Timetable[1,5,3]:='ÎÀèÏ ËÐ';Timetable[1,5,4]:='Èñòîðèÿ ËÊ';
+  Timetable[2,5,1]:='Ìàòðà ËÊ ';Timetable[2,5,2]:='Ìàòðà ÏÇ';Timetable[2,5,3]:='Ïîëèòîëîãèÿ ÏÇ';
+  Timetable[1,2,1]:='English';Timetable[1,2,2]:='Ìàòðà ÏÇ';Timetable[1,2,3]:='Ôèëîñîôèÿ ËÊ';
+  Timetable[2,1,1]:='Ïîëèòîëîãèÿ ËÊ ';Timetable[2,1,2]:='èçðà ÏÇ';Timetable[2,1,3]:='Ôèëîñîñîôèÿ ÏÇ';Timetable[2,1,4]:='ÎÊÒ ÏÇ';Timetable[2,1,5]:='Ê×';
+  Timetable[1,1,1]:='ÈÊÃ ËÊ ';Timetable[1,1,2]:='Ôèçðà ÏÇ';Timetable[1,1,3]:='Ôèëîñîñîôèÿ ÏÇ';Timetable[1,1,4]:='Èñòîðèÿ ÏÇ';Timetable[1,1,5]:='Ê×';
+  MyKomandas;
+  readln;
+  { TODO -oUser -cConsole Main : Insert code here }
+end.
